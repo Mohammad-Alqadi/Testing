@@ -1,0 +1,26 @@
+name: Enforce Merge Method
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  enforce-merge-method:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Merge Method
+        if: github.event.pull_request.base.ref == 'develop'
+        run: |
+          if [ "${{ github.event.pull_request.merge_commit_sha }}" ]; then
+            echo "ERROR: Only Squash Merge is allowed on develop branch."
+            exit 1
+          fi
+      - name: Check Merge Method for Main
+        if: github.event.pull_request.base.ref == 'main'
+        run: |
+          if ! [ "${{ github.event.pull_request.merge_commit_sha }}" ]; then
+            echo "ERROR: Only Regular Merge is allowed on main branch."
+            exit 1
+          fi
+
