@@ -2,7 +2,7 @@ name: Enforce Merge Method
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened]
 
 jobs:
   enforce-merge-method:
@@ -23,4 +23,3 @@ jobs:
             echo "ERROR: Only Regular Merge is allowed on main branch."
             exit 1
           fi
-
